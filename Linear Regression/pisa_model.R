@@ -10,9 +10,22 @@ tapply(pisaTrain$readingScore, pisaTrain$male, mean)
 pisaTrain1 = na.omit(pisaTrain)
 pisaTest1 = na.omit(pisaTest)
 
-
+#raceeth is unordered variable
 str(pisaTrain1)
 table(pisaTrain1$raceeth)
 levels(pisaTrain1$raceeth)
 
-plot(pisaTrain1$raceeth)
+#Releveling factor variable raceeth
+pisaTrain1$raceeth = relevel(pisaTrain1$raceeth, "White")
+pisaTest1$raceeth = relevel(pisaTest1$raceeth, "White")
+
+str(pisaTrain1)
+levels(pisaTrain1$raceeth)
+
+#Linear Reg model to predict reading score
+readingScoreReg <- lm(readingScore ~ ., data = pisaTrain1)
+summary(readingScoreReg)
+
+sse <- sum(readingScoreReg$residuals^2)
+rmse <- sqrt(sse/nrow(pisaTrain1))
+
