@@ -10,8 +10,10 @@ plot(quality$OfficeVisits, quality$Narcotics, col = ifelse(quality$PoorCare == 1
 install.packages("caTools")
 library(caTools)
 
-#Split data set
+#Split data set and start count from no. 88 so that training set remains as that of instructor
 set.seed(88)
+
+#Split col in ratio .75 to .25
 split = sample.split(quality$PoorCare, SplitRatio = 0.75)
 split
 table(split)
