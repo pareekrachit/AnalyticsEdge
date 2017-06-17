@@ -1,0 +1,36 @@
+#Read data file
+stevens <- read.csv("~/The Analytics Edge/Week 4/The Supreme Court/stevens.csv")
+str(stevens)
+
+#Split data set
+library(caTools)
+set.seed(3000)
+sample <- sample.split(stevens$Reverse, SplitRatio = 0.7)
+stevensTrain <- subset(stevens, sample == TRUE)
+stevensTest <- subset(stevens, sample == FALSE)
+
+#Install Rpart library
+install.packages("rpart")
+library(rpart)
+install.packages("rpart.plot")
+library(rpart.plot)
+
+#CART model
+stevensTree <- rpart(Reverse ~ Circuit + Issue + Petitioner + Respondent + LowerCourt + Unconst, data = stevensTrain, method="class", minbucket=25)
+prp(stevensTree)
+
+table(stevens$LowerCourt)
+table(stevens$Respondent)
+
+
+#Prediction
+predictStevens <- predict(stevensTree, newdata = stevensTest, type = "class")
+predictStevens
+table(stevensTest$Reverse, predictStevens)
+112/170
+
+#ROC curve
+
+
+
+summary(glm(Reverse ~ Circuit + Issue + Petitioner + Respondent + LowerCourt + Unconst, data = stevensTrain, family = "binomial"))
